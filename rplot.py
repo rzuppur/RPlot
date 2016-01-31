@@ -35,6 +35,14 @@ import warnings
 
 from numpy import sin, cos, tan, arcsin, arccos, arctan, log, e, pi
 from scipy.special import gamma, digamma, lambertw, zetac
+i = 1j
+
+
+def isin(x):
+    return i*sin(x)
+
+def c(x, y):
+    return x + i*y
 
 # ===========================================================
 
@@ -98,28 +106,37 @@ class RPlot:
 
     @property
     def function(self):
-        return eval("lambda z:" + self._f_stiring)
+        return eval('lambda z: (' + self._f_stiring + ') + 0*z')
 
     @function.setter
     def function(self, value):
-        self._f_stiring = value
+        nvalue = ""
+        for l in range(len(value)):
+            if value[l] == "i" and value[l-1] in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+                nvalue += "*"
+            nvalue += value[l]
+
+        self._f_stiring = nvalue
 
     def _create_values(self):
         """ Create complex plane and compute function values
         """
         hx, hy = self.h_size/2, self.v_size/2
 
-        y,x = np.mgrid[0:self.v_size,0:self.h_size]
+        _y, _x = np.mgrid[0:self.v_size,0:self.h_size]
 
-        x = (x - hx)/self.scale
-        y = (hy - y)/self.scale
+        _x = (_x - hx)/self.scale
+        _y = (hy - _y)/self.scale
 
-        x += self.offset_x
-        y += self.offset_y
+        _x += self.offset_x
+        _y += self.offset_y
 
-        self._b_grid = [x, y]
-        z = x + y*1j
+        self._b_grid = [_x, _y]
+        z = _x + _y*1j
 
+        global x, y
+        x = _x
+        y = _y
         f = self.function(z)
 
         return f
