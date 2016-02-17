@@ -31,11 +31,12 @@ The function you want to visualize can be entered to the text box at top. You ca
 * run.py __[function]__
 * run.py __[function]__ __[window width]__ __[window height]__
 
-_Example: run.py gamma(z) 800 300_
+Example: _run.py gamma(z) 800 300_
 
+ 
 
-
-## _TODO:_
+TODO
+======
 * Better text input
 * Reset button
 
